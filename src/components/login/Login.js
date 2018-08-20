@@ -19,13 +19,13 @@ const Login = ({ onRouteChange } ) => {
                 </fieldset>
                 <div class="">
                     <input 
-                      onClick={()=> onRouteChange('Home')}
+                      onClick={() => onRouteChange('home')}
                       class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
                       type="submit" 
                       value="Sign in" />
                 </div>
                 <div class="lh-copy mt3">
-                    <p onClick= {() => onRouteChange('Register')} class="f6 link dim black db">Register</p>
+                    <p onClick= {() => onRouteChange('register')} class="f6 link dim black db">Register</p>
                 </div>
             </form>
         </main>

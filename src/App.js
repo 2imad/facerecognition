@@ -36,7 +36,8 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
-      route: 'signing'
+      route: 'signing',
+      isSignedIn : false
     }
   }
 
@@ -74,7 +75,15 @@ class App extends Component {
       .then(response => this.displayBox(this.calculateFaceLocation(response)))
       .catch(error => console.log(error))
   }
+
+
   onRouteChange = (route) => {
+    if(route === 'signing') {
+     this.setState({isSignedIn: false })  
+    }else if (route === 'home'){
+     this.setState({isSignedIn : true })
+    }
+      
     this.setState({ route: route })
   }
 
@@ -85,8 +94,10 @@ class App extends Component {
         <Particles className='particles'
           params={particlesOptions}
         />
-        <Navigation onRouteChange={this.onRouteChange} />
-        {this.state.route === 'Home' ?
+        <Navigation 
+          isSignedIn={this.state.isSignedIn}
+          onRouteChange={this.onRouteChange} />
+        {this.state.route === 'home' ?
           <div>
             <Logo />
             <Rank />
