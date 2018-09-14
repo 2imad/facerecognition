@@ -14,7 +14,7 @@ const Face = ({ImgUrl , box }) => {
     return (
          <div className="center ma">
          <div className='absolute mt2'>
-             <img id='input-image' alt='image' src={ImgUrl}  width="500px" height="auto" /> 
+             <img id='input-image' alt='Face' src={ImgUrl}  width="500px" height="auto" /> 
              <div  style={styles}
              className='bounding-box'></div>
          </div>

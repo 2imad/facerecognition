@@ -41,6 +41,7 @@ class App extends Component {
     }
   }
 
+
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box
     const image = document.getElementById('input-image')
@@ -89,20 +90,21 @@ class App extends Component {
 
 
   render() {
+    const { isSignedIn , imageUrl , box  } = this.state
     return (
       <div className="App">
         <Particles className='particles'
           params={particlesOptions}
         />
         <Navigation 
-          isSignedIn={this.state.isSignedIn}
+          isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange} />
         {this.state.route === 'home' ?
           <div>
             <Logo />
             <Rank />
             <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-            <Face box={this.state.box} ImgUrl={this.state.imageUrl} />
+            <Face box={box} ImgUrl={imageUrl} />
           </div>
           : (
             this.state.route === 'signing'
