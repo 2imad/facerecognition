@@ -10,6 +10,7 @@ class Login extends Component {
         }
         this.onEmailChange = this.onEmailChange.bind(this)
         this.onPasswordChange = this.onPasswordChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
     }
     onEmailChange = (event) => {
         this.setState({ signinEmail: event.target.value })
@@ -18,8 +19,21 @@ class Login extends Component {
         this.setState({ signinPassword: event.target.value })
     }
     onSubmit = () => {
-        console.log(this.state)
-        this.props.onRouteChange('home')
+        fetch('http://localhost:3001/signin' , {
+            method : 'POST',
+            headers : {'content-Type' : 'application/json'},
+            body : JSON.stringify({
+                email : this.state.signinEmail,
+                password : this.state.signinPassword
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if ( data === 'success'){
+                this.props.onRouteChange('home')
+            }
+        })
     }
 
     render() {
