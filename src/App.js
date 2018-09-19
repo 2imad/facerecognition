@@ -37,8 +37,27 @@ class App extends Component {
       imageUrl: '',
       box: {},
       route: 'signing',
-      isSignedIn : false
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
+  }
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    }
+   )
   }
 
 
@@ -67,49 +86,72 @@ class App extends Component {
   }
 
 
-  onSubmit = () => {
+  onImageSubmit = () => {
     this.setState({ imageUrl: this.state.input })
     app.models
       .predict(
-        Clarifai.FACE_DETECT_MODEL,
-        this.state.input)
-      .then(response => this.displayBox(this.calculateFaceLocation(response)))
+        Clarifai.FACE_DETECT_MODEL, this.state.input)
+      .then(response =>{ 
+        if (response){
+          fetch('http://localhost:3001/image' , {
+            method :'PUT',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+              id : this.state.user.id,
+            })
+          })
+          .then(response =>  response.json())
+          .then(count => {
+            this.setState(Object.assign(this.state.user , {entries : count  }))
+          })
+        }
+      
+        this.displayBox(this.calculateFaceLocation(response))
+        
+      })
       .catch(error => console.log(error))
   }
 
 
   onRouteChange = (route) => {
-    if(route === 'signing' || route === 'register' ) {
-     this.setState({isSignedIn: false })  
-    }else if (route === 'home'){
-     this.setState({isSignedIn : true })
+    if (route === 'signing' || route === 'register') {
+      this.setState({ isSignedIn: false })
+    } else if (route === 'home') {
+      this.setState({ isSignedIn: true })
     }
-      
+
     this.setState({ route: route })
   }
 
 
   render() {
-    const { isSignedIn , imageUrl , box  } = this.state
+    const { isSignedIn, imageUrl, box } = this.state
     return (
       <div className="App">
         <Particles className='particles'
           params={particlesOptions}
         />
-        <Navigation 
+        <Navigation
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange} />
         {this.state.route === 'home' ?
           <div>
             <Logo />
-            <Rank />
-            <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
+            <Rank
+            name ={this.state.user.name}
+            entries={this.state.user.entries}
+            />
+            <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onImageSubmit} />
             <Face box={box} ImgUrl={imageUrl} />
           </div>
           : (
             this.state.route === 'signing'
-              ? <Login onRouteChange={this.onRouteChange} />
-              : <Register onRouteChange={this.onRouteChange} />
+              ? <Login 
+              loadUser={this.loadUser}
+              onRouteChange={this.onRouteChange} />
+              : <Register 
+              loadUser={this.loadUser}
+              onRouteChange={this.onRouteChange} />
           )
         }
       </div>
