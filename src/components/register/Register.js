@@ -11,20 +11,17 @@ class Register extends Component{
              name : ''
          }
     }
-    
     onNameChange = ( event ) => {
         this.setState({name : event.target.value})
     }
     onPasswordChange = ( event  ) => {
         this.setState({ password : event.target.value })
     }
-
     onEmailChange = ( event ) => {
         this.setState({ email : event.target.value })
     }
-
-
     onSubmit = () => {
+        if(this.state.email && this.state.password && this.state.name){
         fetch('http://localhost:3001/register' , {
             method : 'POST',
             headers : {'content-Type' : 'application/json'},
@@ -42,15 +39,10 @@ class Register extends Component{
                 this.props.onRouteChange('home')
             }
         })
+       }
     }
  
-
-
-
- 
- 
     render(){
-
     return (
         <article class="br3 ba  b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
             <main class="pa4 black-80">
@@ -88,13 +80,6 @@ class Register extends Component{
                             />
                         </div>
                     </fieldset>
-                    <div class="">
-                        {/* <input
-                            onClick={() => this.props.onRouteChange('home')}
-                            class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit"
-                            value="Register"/> */}
-                    </div>
                     <div class="lh-copy mt3">
                         <p onClick={this.onSubmit} className=" pointer f6 link dim black db">Register  </p>
                     </div>

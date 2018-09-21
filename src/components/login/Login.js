@@ -19,6 +19,7 @@ class Login extends Component {
         this.setState({ signinPassword: event.target.value })
     }
     onSubmit = () => {
+        if(this.state.signinEmail && this.state.signinPassword){
         fetch('http://localhost:3001/signin' , {
             method : 'POST',
             headers : {'content-Type' : 'application/json'},
@@ -29,11 +30,12 @@ class Login extends Component {
         })
         .then(response => response.json())
         .then(user => {
-            if ( user.id){
+            if ( user ){
                 this.props.loadUser(user)
                 this.props.onRouteChange('home')
             }
         })
+       }
     }
 
     render() {
@@ -51,7 +53,9 @@ class Login extends Component {
                                     className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                                     type="email"
                                     name="email-address"
-                                    id="email-address" />
+                                    id="email-address"
+                                    required 
+                                    />
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
@@ -60,7 +64,9 @@ class Login extends Component {
                                     className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                                     type="password"
                                     name="password"
-                                    id="password" />
+                                    id="password"
+                                    required 
+                                    />
                             </div>
                         </fieldset>
                         <div className="">
@@ -68,7 +74,8 @@ class Login extends Component {
                                 onClick={this.onSubmit}
                                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                                 type="submit"
-                                value="Sign in"/>
+                                value="Sign in"
+                                />
                         </div>
                         <div className="lh-copy mt3">
                             <p onClick={() => onRouteChange('register')} className="f6 link dim black db">Register</p>
