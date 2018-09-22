@@ -28,7 +28,6 @@ const particlesOptions = {
     }
   }
 }
-
 const initialState = {
   input: '',
   imageUrl: '',
@@ -43,7 +42,6 @@ const initialState = {
     joined: ''
   }
 }
-
 class App extends Component {
   constructor() {
     super()
@@ -61,8 +59,6 @@ class App extends Component {
     }
    )
   }
-
-
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box
     const image = document.getElementById('input-image')
@@ -76,18 +72,12 @@ class App extends Component {
       bottomRow: height - (clarifaiFace.bottom_row * height)
     }
   }
-
-
   displayBox = (box) => {
     this.setState({ box })
   }
-
-
   onInputChange = (event) => {
     this.setState({ input: event.target.value })
   }
-
-
   onImageSubmit = () => {
     this.setState({ imageUrl: this.state.input })
     app.models
@@ -95,7 +85,7 @@ class App extends Component {
         Clarifai.FACE_DETECT_MODEL, this.state.input)
       .then(response =>{ 
         if (response){
-          fetch('http://localhost:3001/image' , {
+          fetch('https://facereconapi.herokuapp.com/image' , {
             method :'PUT',
             headers : {'Content-Type' : 'application/json'},
             body : JSON.stringify({
@@ -113,8 +103,6 @@ class App extends Component {
       })
       .catch(error => console.log(error))
   }
-
-
   onRouteChange = (route) => {
     if (route === 'signing' || route === 'register') {
       this.setState(initialState)
@@ -124,8 +112,6 @@ class App extends Component {
 
     this.setState({ route: route })
   }
-
-
   render() {
     const { isSignedIn, imageUrl, box } = this.state
     return (
