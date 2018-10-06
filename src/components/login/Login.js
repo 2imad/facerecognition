@@ -6,7 +6,8 @@ class Login extends Component {
         super(props)
         this.state = {
             signinEmail: '',
-            signinPassword: ''
+            signinPassword: '',
+            hasError: false
         }
         this.onEmailChange = this.onEmailChange.bind(this)
         this.onPasswordChange = this.onPasswordChange.bind(this)
@@ -18,25 +19,36 @@ class Login extends Component {
     onPasswordChange = (event) => {
         this.setState({ signinPassword: event.target.value })
     }
-    onSubmit = () => {
-        if(this.state.signinEmail && this.state.signinPassword){
-        fetch('https://facereconapi.herokuapp.com/signin' , {
-            method : 'POST',
-            headers : {'content-Type' : 'application/json'},
-            body : JSON.stringify({
-                email : this.state.signinEmail,
-                password : this.state.signinPassword
-            })
-        })
-        .then(response => response.json())
-        .then(user => {
-            if ( user.id ){
-                this.props.loadUser(user)
-                this.props.onRouteChange('home')
-            }
-        })
-       }
+
+    haserror = () => {
+        return (
+            <span className="error-info">Wrong combination,<br /> please try again!</span>
+        )
     }
+    onSubmit = () => {
+        if (this.state.signinEmail && this.state.signinPassword) {
+            fetch('https://facereconapi.herokuapp.com/signin', {
+                method: 'POST',
+                headers: { 'content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: this.state.signinEmail,
+                    password: this.state.signinPassword
+                })
+            })
+                .then(response => response.json())
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user)
+                        this.props.onRouteChange('home')
+                    } else {
+                        this.setState({ hasError: true })
+                    }
+                })
+        } else {
+            this.setState({ hasError: true })
+        }
+    }
+
 
     render() {
         const { onRouteChange } = this.props
@@ -46,17 +58,19 @@ class Login extends Component {
                     <div className="measure">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                             <legend className="f1 fw6 ph0 mh0">Sign In</legend>
-                            <div className="mt3">
+                            <form className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input
                                     onChange={this.onEmailChange}
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa3 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                                     type="email"
                                     name="email-address"
                                     id="email-address"
-                                    required 
-                                    />
-                            </div>
+                                    placeholder="example@email.com"
+                                    required
+                                />
+                                <span className="tooltip" data-tooltip="email must be in example@email.com format">?</span>
+                            </form>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input
@@ -65,8 +79,9 @@ class Login extends Component {
                                     type="password"
                                     name="password"
                                     id="password"
-                                    required 
-                                    />
+                                    placeholder="****************"
+                                    required
+                                />
                             </div>
                         </fieldset>
                         <div className="">
@@ -75,11 +90,12 @@ class Login extends Component {
                                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                                 type="submit"
                                 value="Sign in"
-                                />
+                            />
                         </div>
                         <div className="lh-copy mt3">
                             <p onClick={() => onRouteChange('register')} className="f6 link dim black db">Register</p>
                         </div>
+                        {this.state.hasError && this.haserror()}
                     </div>
                 </main>
             </article>

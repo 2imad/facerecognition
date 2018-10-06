@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../login/login.css'
 
 
 class Register extends Component{
@@ -57,9 +58,10 @@ class Register extends Component{
                              name="name" 
                              id="name" 
                              onChange = {this.onNameChange }
+                             placeholder="John Smith"
                              />
                         </div>
-                        <div className="mt3">
+                        <form className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                             <input 
                             className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
@@ -67,8 +69,10 @@ class Register extends Component{
                             name="email-address" 
                             id="email-address" 
                             onChange={this.onEmailChange}
+                            placeholder="example@email.com"
                             />
-                        </div>
+                            <span className="tooltip" data-tooltip="email must be in example@email.com format">?</span>
+                        </form>
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                             <input 
@@ -77,6 +81,7 @@ class Register extends Component{
                             name="password" 
                             id="password" 
                             onChange={this.onPasswordChange}
+                            placeholder="**************"
                             />
                         </div>
                     </fieldset>
