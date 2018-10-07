@@ -26,7 +26,7 @@ class Login extends Component {
         )
     }
     onSubmit = () => {
-        if (this.state.signinEmail && this.state.signinPassword) {
+        if (this.state.signinEmail.length > 1 &&  this.state.signinEmail && this.state.signinPassword) {
             fetch('https://facereconapi.herokuapp.com/signin', {
                 method: 'POST',
                 headers: { 'content-Type': 'application/json' },

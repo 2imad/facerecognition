@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import '../login/login.css'
+
 
 
 class Register extends Component{
@@ -65,13 +65,12 @@ class Register extends Component{
                             <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                             <input 
                             className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                            type="email" 
+                            type="email"    
                             name="email-address" 
                             id="email-address" 
                             onChange={this.onEmailChange}
                             placeholder="example@email.com"
                             />
-                            <span className="tooltip" data-tooltip="email must be in example@email.com format">?</span>
                         </form>
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
